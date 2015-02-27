@@ -83,7 +83,7 @@ public class RegisterActivity extends ActionBarActivity {
         rsignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+/*
                 String name = rname.getText().toString().trim();   //trim zbriše če je za imenom dal space
                 String surname = rsurname.getText().toString().trim();
                 String username = rusername.getText().toString().trim();
@@ -96,37 +96,17 @@ public class RegisterActivity extends ActionBarActivity {
                     arguments.add(new BasicNameValuePair("username", username));
                     arguments.add(new BasicNameValuePair("password", pass1));
                     arguments.add(new BasicNameValuePair("email", email));
-
-
-                    HttpClient client = new DefaultHttpClient();
-                    HttpPost post = new HttpPost("http://veligovsek.si/events/apis/register.php");
-
-                    //
-                    // Create some NameValuePair for HttpPost parameters
-                    //
-
-                    try {
-                        post.setEntity(new UrlEncodedFormEntity(arguments));
-                        HttpResponse response = client.execute(post);
-
-                        //
-                        // Print out the response message
-                        //
-
-                        Toast.makeText(RegisterActivity.this, "Signup Succesful", Toast.LENGTH_LONG).show();
-                        System.out.println(EntityUtils.toString(response.getEntity()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-
-
-
-              //      Toast.makeText(RegisterActivity.this, "Something went Wrong, Probably the passwords", Toast.LENGTH_LONG).show();
-                    //passa nista enaka
+*/
+                requestData("http://veligovsek.si/events/apis/register.php");
 
             }
         });
+
+    }
+
+    private void requestData(String uri){
+        MyTask task = new MyTask();
+        task.execute(uri);
     }
 
     @Override
@@ -146,8 +126,32 @@ public class RegisterActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //ASYNC
+    private class MyTask extends AsyncTask<String,String,String>
+    {
+        @Override
+        protected void onPreExecute() { //preden se async v backgroundu začne
+               super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String content = HttpManager.getData(params[0]);
+
+            return content;
+        }
+
+        @Override
+        protected void onPostExecute(String s) { //ko se konča async v backgroundu
+            super.onPostExecute(s);
+
+        }
     }
 }

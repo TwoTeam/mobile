@@ -1,11 +1,15 @@
 package teamtwo.event.com.events;
 
 import android.app.ActionBar;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 
 public class MainActivity extends FragmentActivity {
@@ -23,11 +27,24 @@ ViewPager viewPager;
 
 
 
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(pagerAdapter);
 
+    }
+    //ČE JE ONLINE
+    protected boolean isOnline(){
+        ConnectivityManager cm= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if(networkInfo != null && networkInfo.isConnectedOrConnecting()){
+            return true;
+        }
+        else{
+            Toast.makeText(this,"Network isn't available", Toast.LENGTH_LONG);
+            return false;
+        }
     }
 }

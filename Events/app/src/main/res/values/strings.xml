@@ -9,7 +9,7 @@
     <string name="FragmentB">Fragment B</string>
     <string name="FragmentC">Fragment C</string>
     <string name="title_activity_register">RegisterActivity</string>
-
     <string name="username">Username</string>
+    <string name="title_activity_login">LoginActivity</string>
 
 </resources>
