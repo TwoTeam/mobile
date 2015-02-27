@@ -121,7 +121,7 @@ public class LoginActivity extends ActionBarActivity {
            switch (state)
            {
                case Networking.NETWORK_STATE_REGISTER:
-                   postParameters.add(new BasicNameValuePair("userName",username));
+                   postParameters.add(new BasicNameValuePair("user",username));
                    postParameters.add(new BasicNameValuePair("password",password));
                   valid = true;
                    break;
@@ -175,6 +175,12 @@ public class LoginActivity extends ActionBarActivity {
 
 
         //napiš ka ti je vrnu json (46min)
+        /*
+        "response":true,
+        "name":"a",
+        "surname":"a",
+        "id":"4"
+        */
 
         if(response.contains("error"))
         {
@@ -202,6 +208,9 @@ public class LoginActivity extends ActionBarActivity {
 
             _("JSON CONTENT:");
             _("name:"+name);
+
+
+            toast("Login Successful!");
         }
         catch ( JSONException e)
         {
