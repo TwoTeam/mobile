@@ -110,7 +110,9 @@
                 android:id="@+id/tvSignUp"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="#ffff712b" />
+                android:textColor="#ffff712b"
+                android:onClick="onClick"
+                android:clickable="true"/>
         </LinearLayout>
 
     </LinearLayout>

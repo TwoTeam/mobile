@@ -29,85 +29,56 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
-import java.util.jar.Attributes;
-import java.util.logging.LogRecord;
 
 
-public class LoginActivity extends ActionBarActivity {
+public class ForgotYourPassword extends ActionBarActivity {
 
     Context c; //ne vem kaj je to, ampak to rabiš
 
 
-    EditText etUsername,
-             etPassword;
+    EditText etEmail;
 
-    String username, password;
-    Button bLogin; //ta dela
-    ImageButton ibButton; //še ne dela, vse isto sam da je image, naredi namesto button
-
-
-    TextView tvtextView, tvForgotPassword;
+    String email;
+    Button bSend; //ta dela
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_forgot_your_password);
 
         c = this;
 
 
-        etUsername = (EditText) findViewById(R.id.etUsername);
-        etPassword = (EditText) findViewById(R.id.etPassword);
+        etEmail = (EditText) findViewById(R.id.etEmail);
 
-        tvtextView = (TextView) findViewById(R.id.tvSignUp);
-        tvForgotPassword = (TextView) findViewById(R.id.tvForgotPassword);
+        bSend = (Button) findViewById(R.id.bSend);
 
-        bLogin = (Button) findViewById(R.id.bLogin);
-
-        bLogin.setOnClickListener(new View.OnClickListener() {
+        bSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _("Login button hit!");
+                _("Send button hit!");
 
-                username = etUsername.getText()+""; //" " da je pol string drugač je error
-                password = etPassword.getText()+"";
-                _("username:"+username);
-                _("password:"+password);
+                email = etEmail.getText() + ""; //" " da je pol string drugač je error
+                _("emal:" + email);
 
-                if (username.length()==0 || password.length()==0) //!!!!ŠE VEČ KOMBINACIJ
+                if (email.length() == 0) //!!!!ŠE VEČ KOMBINACIJ
                 {
-                   toast("Please fill in username and password");
+                    toast("Please enter your email");
                     return;
                 }
 
                 //networking
                 Networking n = new Networking();
-                n.execute("http://veligovsek.si/events/apis/login.php",Networking.NETWORK_STATE_REGISTER);
+                n.execute("http://veligovsek.si/events/apis/forgotpassword.php", Networking.NETWORK_STATE_REGISTER);
+                toast("Please check your inbox");
 
             }
         });
-
-        tvtextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent("teamtwo.event.com.events.Register"));
-
-            }
-        });
-
-        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent("teamtwo.event.com.events.ForgotYourPassword"));
-
-            }
-        });}
+  }
 
 
 
@@ -122,7 +93,7 @@ public class LoginActivity extends ActionBarActivity {
                         Toast.makeText(c, s, Toast.LENGTH_SHORT).show();
                     }
                 }
-                 );
+        );
     }
 
 
@@ -135,7 +106,7 @@ public class LoginActivity extends ActionBarActivity {
         protected String doInBackground(Object[] params) {
 
             _("doInBackground. ");
-           // getJson("http://veligovsek.si/events/apis/register.php", NETWORK_STATE_REGISTER); //REGISTER WEB.PHP
+            // getJson("http://veligovsek.si/events/apis/register.php", NETWORK_STATE_REGISTER); //REGISTER WEB.PHP
             getJson((String)params[0],(Integer)params[1]); //dobi od n.execute.....
             return null;
         }
@@ -150,16 +121,15 @@ public class LoginActivity extends ActionBarActivity {
 
         boolean valid = false;
 
-           switch (state)
-           {
-               case Networking.NETWORK_STATE_REGISTER:
-                   postParameters.add(new BasicNameValuePair("user",username));
-                   postParameters.add(new BasicNameValuePair("password",password));
-                  valid = true;
-                   break;
-               default:
-                   _("////////WARNING UNKNOWN STATE!//////////");
-           }
+        switch (state)
+        {
+            case Networking.NETWORK_STATE_REGISTER:
+                postParameters.add(new BasicNameValuePair("email",email));
+                valid = true;
+                break;
+            default:
+                _("////////WARNING UNKNOWN STATE!//////////");
+        }
 
         if(valid)
         {
@@ -227,7 +197,7 @@ public class LoginActivity extends ActionBarActivity {
             {
                 _("AAAA WARNING PROBLEM DECODING JSON!"+e.getMessage());
             }
-         return;
+            return;
         }
         else{
             _("No error detected");
@@ -236,13 +206,15 @@ public class LoginActivity extends ActionBarActivity {
         try {
             JSONObject jo = new JSONObject(response);
 
-            String name = jo.getString("name"); //za druge isto narediš
+            String email = jo.getString("email"); //za druge isto narediš
 
             _("JSON CONTENT:");
-            _("name:"+name);
+            _("email:"+email);
 
 
-            toast("Login Successful!");
+            toast("Email SENT Successful!");
+
+            startActivity(new Intent("teamtwo.event.com.events.Login"));
         }
         catch ( JSONException e)
         {

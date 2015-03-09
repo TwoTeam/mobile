@@ -11,5 +11,6 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="username">Username</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_forgot_your_password">ForgotYourPassword</string>
 
 </resources>
