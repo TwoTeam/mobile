@@ -8,7 +8,10 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
         <LinearLayout
             android:orientation="vertical"
@@ -49,20 +52,6 @@
                 android:id="@+id/etPassword"
                 android:hint="Password" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkboxHolder"
-            android:paddingTop="15dp">
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Remember me"
-                android:id="@+id/cbRememberMe" />
         </LinearLayout>
 
         <LinearLayout
