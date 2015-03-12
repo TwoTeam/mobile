@@ -1,7 +1,9 @@
 package teamtwo.event.com.events;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,10 +26,12 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -44,18 +48,41 @@ public class LoginActivity extends ActionBarActivity {
     EditText etUsername,
              etPassword;
 
-    String username, password;
+    String username, password, id, jid, jname;
     Button bLogin; //ta dela
     ImageButton ibButton; //še ne dela, vse isto sam da je image, naredi namesto button
 
 
     TextView tvtextView, tvForgotPassword;
 
+    //REMEMBER ME
+ //   public static final String PREFS_NAME = "MyPrefsFile";
+ //   private static final String PREF_USERNAME = "username";
+  //  private static final String PREF_ID = "id";
 
+    int mode = Activity.MODE_PRIVATE;
+    SharedPreferences mySharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+    //    SharedPreferences pref = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+    //    String jname = pref.getString(PREF_USERNAME, null);
+     //   String jid = pref.getString(PREF_ID, null);
+
+   //     _(PREF_USERNAME);
+   //     _(PREF_ID);
+
+        mySharedPreferences=getSharedPreferences("ACC",mode);
+
+
+        jname =mySharedPreferences.getString("username","");
+        jid =mySharedPreferences.getString("id","");
+
+
+        _("Saved ID: "+jid);
+        _("Saved User: "+jname);
 
         c = this;
 
@@ -68,35 +95,16 @@ public class LoginActivity extends ActionBarActivity {
 
         bLogin = (Button) findViewById(R.id.bLogin);
 
-        bLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _("Login button hit!");
 
-                username = etUsername.getText()+""; //" " da je pol string drugač je error
-                password = etPassword.getText()+"";
-                _("username:"+username);
-                _("password:"+password);
-
-                if (username.length()==0 || password.length()==0) //!!!!ŠE VEČ KOMBINACIJ
-                {
-                   toast("Please fill in username and password");
-                    return;
-                }
-
-                //networking
-                Networking n = new Networking();
-                n.execute("http://veligovsek.si/events/apis/login.php",Networking.NETWORK_STATE_REGISTER);
-
-            }
-        });
 
         tvtextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent("teamtwo.event.com.events.Register"));
-
+                // startActivity(new Intent("teamtwo.event.com.events.Register"));
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                // String value = intent.getStringExtra("id") //če rabimo parej poslat
+                LoginActivity.this.startActivity(intent);
             }
         });
 
@@ -104,10 +112,66 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent("teamtwo.event.com.events.ForgotYourPassword"));
-
+                // startActivity(new Intent("teamtwo.event.com.events.ForgotYourPassword"));
+                Intent intent = new Intent(LoginActivity.this, ForgotYourPassword.class);
+                // String value = intent.getStringExtra("id") //če rabimo parej poslat
+                LoginActivity.this.startActivity(intent);
             }
-        });}
+        });
+        if (jname == "" || jid == "") { //    jname != "" || jid != ""      za testing ker ni LOGOUT-a
+
+            bLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    _("Login button hit!");
+
+                    username = etUsername.getText() + ""; //" " da je pol string drugač je error
+                    password = etPassword.getText() + "";
+                    _("username:" + username);
+                    _("password:" + password);
+
+
+                    if (username.length() == 0 || password.length() == 0) //!!!!ŠE VEČ KOMBINACIJ
+                    {
+                        toast("Please fill in username and password");
+                        return;
+                    }
+                    //networking
+                    else {
+                        Networking n = new Networking();
+                        n.execute("http://veligovsek.si/events/apis/login.php", Networking.NETWORK_STATE_REGISTER);
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                       // String value = intent.getStringExtra("id") //če rabimo parej poslat
+                       LoginActivity.this.startActivity(intent);
+                        _("SAVING ID: "+jid);
+                        _("SAVING User: "+jname);
+                    }
+
+
+                }
+            });
+       }
+       else
+        {
+/*            SharedPreferences pref = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+            jname = pref.getString(PREF_USERNAME, null);
+            jid = pref.getString(PREF_ID, null);
+
+            if (username == null || password == null) {
+                //Prompt for username and password
+            }
+*/
+            _("ID: "+jid);
+            _("User: "+jname);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            // String value = intent.getStringExtra("id") //če rabimo parej poslat
+            LoginActivity.this.startActivity(intent);
+
+
+
+        }
+    }
+
 
 
 
@@ -208,10 +272,12 @@ public class LoginActivity extends ActionBarActivity {
 
         //napiš ka ti je vrnu json (46min)
         /*
-        "response":true,
+{ "result":
+        [{"response":true,
         "name":"a",
         "surname":"a",
-        "id":"4"
+        "id":"4"}]
+}
         */
 
         if(response.contains("error"))
@@ -234,12 +300,34 @@ public class LoginActivity extends ActionBarActivity {
         }
 
         try {
+
+
             JSONObject jo = new JSONObject(response);
 
-            String name = jo.getString("name"); //za druge isto narediš
+            JSONArray results = jo.getJSONArray("result");
+
+            JSONObject finalresult =results.getJSONObject(0);
+
+           jname = finalresult.getString("name"); //za druge isto narediš
+           jid = finalresult.getString("id");
 
             _("JSON CONTENT:");
-            _("name:"+name);
+            _("name:"+jname);
+            _("id:"+jid);
+
+            //REMEMBER ME
+            SharedPreferences.Editor editor = mySharedPreferences.edit();
+
+            editor.putString("username",jname);
+            editor.putString("id",jid);
+            editor.commit();
+        /*    getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
+                    .edit()
+                    .putString(PREF_USERNAME, jname)
+                    .putString(PREF_ID, jid)
+                    .commit();
+
+*/
 
 
             toast("Login Successful!");

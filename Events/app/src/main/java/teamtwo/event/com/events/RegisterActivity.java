@@ -2,6 +2,7 @@ package teamtwo.event.com.events;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -126,6 +127,9 @@ public class RegisterActivity extends ActionBarActivity {
                 //networking
                 Networking n = new Networking();
                 n.execute("http://veligovsek.si/events/apis/register.php",Networking.NETWORK_STATE_REGISTER);
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                // String value = intent.getStringExtra("id") //če rabimo parej poslat
+                RegisterActivity.this.startActivity(intent);
             }
         });
 

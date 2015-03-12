@@ -23,9 +23,9 @@ ViewPager viewPager;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
         setContentView(R.layout.activity_main);
-
-
 
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
@@ -35,8 +35,12 @@ ViewPager viewPager;
         viewPager.setAdapter(pagerAdapter);
 
     }
+
+    @Override
+    public void onBackPressed() { // back disablan oz. tuki ga customiziraš
+    }
     //ČE JE ONLINE
-    protected boolean isOnline(){
+    protected boolean isOnline(){ //še ni nikjer
         ConnectivityManager cm= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         if(networkInfo != null && networkInfo.isConnectedOrConnecting()){

@@ -63,7 +63,7 @@ public class ForgotYourPassword extends ActionBarActivity {
                 _("Send button hit!");
 
                 email = etEmail.getText() + ""; //" " da je pol string drugač je error
-                _("emal:" + email);
+                _("email:" + email);
 
                 if (email.length() == 0) //!!!!ŠE VEČ KOMBINACIJ
                 {
@@ -75,6 +75,9 @@ public class ForgotYourPassword extends ActionBarActivity {
                 Networking n = new Networking();
                 n.execute("http://veligovsek.si/events/apis/forgotpassword.php", Networking.NETWORK_STATE_REGISTER);
                 toast("Please check your inbox");
+                Intent intent = new Intent(ForgotYourPassword.this, LoginActivity.class);
+                // String value = intent.getStringExtra("id") //če rabimo parej poslat
+                ForgotYourPassword.this.startActivity(intent);
 
             }
         });
