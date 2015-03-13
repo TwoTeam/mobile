@@ -118,7 +118,7 @@ public class LoginActivity extends ActionBarActivity {
                 LoginActivity.this.startActivity(intent);
             }
         });
-        if (jname == "" || jid == "") { //    jname != "" || jid != ""      za testing ker ni LOGOUT-a
+        if (jname == "" || jid == "") { //    jname != "" || jid != ""  (zapomne) jname == "" || jid == "" (TESTING zmeri na login)   za testing ker ni LOGOUT-a
 
             bLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -140,11 +140,11 @@ public class LoginActivity extends ActionBarActivity {
                     else {
                         Networking n = new Networking();
                         n.execute("http://veligovsek.si/events/apis/login.php", Networking.NETWORK_STATE_REGISTER);
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+/*                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                        // String value = intent.getStringExtra("id") //če rabimo parej poslat
                        LoginActivity.this.startActivity(intent);
                         _("SAVING ID: "+jid);
-                        _("SAVING User: "+jname);
+                        _("SAVING User: "+jname);*/
                     }
 
 
@@ -318,7 +318,7 @@ public class LoginActivity extends ActionBarActivity {
             //REMEMBER ME
             SharedPreferences.Editor editor = mySharedPreferences.edit();
 
-            editor.putString("username",jname);
+            editor.putString("name",jname);
             editor.putString("id",jid);
             editor.commit();
         /*    getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
@@ -331,15 +331,21 @@ public class LoginActivity extends ActionBarActivity {
 
 
             toast("Login Successful!");
+                      Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                       // String value = intent.getStringExtra("id") //če rabimo parej poslat
+                       LoginActivity.this.startActivity(intent);
+                        _("SAVING ID: "+jid);
+                        _("SAVING User: "+jname);
+
         }
         catch ( JSONException e)
         {
             _("WARNING PROBLEM DECODING JSON!"+e.getMessage());
+            toast(response);
         }
 
 
     }
-
 /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
