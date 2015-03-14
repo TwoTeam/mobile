@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +18,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +66,10 @@ public class LoginActivity extends ActionBarActivity {
 
     int mode = Activity.MODE_PRIVATE;
     SharedPreferences mySharedPreferences;
+
+
+    private ProgressBar spinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +94,10 @@ public class LoginActivity extends ActionBarActivity {
 
         c = this;
 
+        //loadingspinner
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.GONE);
+
 
         etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
@@ -94,8 +106,6 @@ public class LoginActivity extends ActionBarActivity {
         tvForgotPassword = (TextView) findViewById(R.id.tvForgotPassword);
 
         bLogin = (Button) findViewById(R.id.bLogin);
-
-
 
         tvtextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +128,7 @@ public class LoginActivity extends ActionBarActivity {
                 LoginActivity.this.startActivity(intent);
             }
         });
+
         if (jname == "" || jid == "") { //    jname != "" || jid != ""  (zapomne) jname == "" || jid == "" (TESTING zmeri na login)   za testing ker ni LOGOUT-a
 
             bLogin.setOnClickListener(new View.OnClickListener() {
@@ -125,26 +136,38 @@ public class LoginActivity extends ActionBarActivity {
                 public void onClick(View v) {
                     _("Login button hit!");
 
-                    username = etUsername.getText() + ""; //" " da je pol string drugač je error
-                    password = etPassword.getText() + "";
-                    _("username:" + username);
-                    _("password:" + password);
+                    boolean net = isOnline();
+                    if(net) {
+                        spinner.setVisibility(View.VISIBLE);
+                        username = etUsername.getText() + ""; //" " da je pol string drugač je error
+                        password = etPassword.getText() + "";
+                        _("username:" + username);
+                        _("password:" + password);
 
 
-                    if (username.length() == 0 || password.length() == 0) //!!!!ŠE VEČ KOMBINACIJ
-                    {
-                        toast("Please fill in username and password");
-                        return;
-                    }
-                    //networking
-                    else {
-                        Networking n = new Networking();
-                        n.execute("http://veligovsek.si/events/apis/login.php", Networking.NETWORK_STATE_REGISTER);
+                        if (username.length() == 0 || password.length() == 0) //!!!!ŠE VEČ KOMBINACIJ
+                        {
+                            spinner.setVisibility(View.GONE);
+                            toast("Please fill in username and password");
+                            return;
+                        }
+                        //networking
+                        else {
+
+                            Networking n = new Networking();
+                            n.execute("http://veligovsek.si/events/apis/login.php", Networking.NETWORK_STATE_REGISTER);
 /*                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                        // String value = intent.getStringExtra("id") //če rabimo parej poslat
                        LoginActivity.this.startActivity(intent);
                         _("SAVING ID: "+jid);
                         _("SAVING User: "+jname);*/
+
+                        }
+                    }
+                    else
+                    {
+                        spinner.setVisibility(View.GONE);
+                        toast("Please check your internet connection.");
                     }
 
 
@@ -161,7 +184,7 @@ public class LoginActivity extends ActionBarActivity {
                 //Prompt for username and password
             }
 */
-            _("ID: "+jid);
+            _("ID: " + jid);
             _("User: "+jname);
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             // String value = intent.getStringExtra("id") //če rabimo parej poslat
@@ -194,6 +217,12 @@ public class LoginActivity extends ActionBarActivity {
     //ASYNC, rabiš drugač se crasha(dela na v drugih treadih in ne na mainu
     private class Networking extends AsyncTask
     {
+        @Override
+        protected void onPreExecute() {
+            spinner.setVisibility(View.VISIBLE);
+        }
+
+
         public static final int NETWORK_STATE_REGISTER = 1;
         @Override
         protected String doInBackground(Object[] params) {
@@ -201,7 +230,16 @@ public class LoginActivity extends ActionBarActivity {
             _("doInBackground. ");
            // getJson("http://veligovsek.si/events/apis/register.php", NETWORK_STATE_REGISTER); //REGISTER WEB.PHP
             getJson((String)params[0],(Integer)params[1]); //dobi od n.execute.....
+
+            try{
+                spinner.setVisibility(View.GONE);
+            }
+            catch (Exception e)
+            {
+                _("PAAAZZZZIZIIZII"+e);   ///error
+            }
             return null;
+
         }
     }
 
@@ -209,6 +247,7 @@ public class LoginActivity extends ActionBarActivity {
     {
         HttpClient httpClient=new DefaultHttpClient();
         _("doing POST to URL now...");
+      //  spinner.setVisibility(View.VISIBLE);
         HttpPost request = new HttpPost(url);
         List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 
@@ -251,8 +290,7 @@ public class LoginActivity extends ActionBarActivity {
                 e.printStackTrace();
 
             }
-            _("result: "+stringBuffer);
-
+            _("result: " + stringBuffer);
 
             /////
 
@@ -341,11 +379,14 @@ public class LoginActivity extends ActionBarActivity {
         catch ( JSONException e)
         {
             _("WARNING PROBLEM DECODING JSON!"+e.getMessage());
-            toast(response);
+         //   toast(response);
+            toast("Username or Password is incorrect or doesn't exist!");
+
         }
 
 
     }
+
 /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -369,6 +410,18 @@ public class LoginActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     */
+
+protected boolean isOnline(){
+    ConnectivityManager cm= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+    if(networkInfo != null && networkInfo.isConnectedOrConnecting()){
+        return true;
+    }
+    else{
+        Toast.makeText(this,"Network isn't available", Toast.LENGTH_SHORT);
+        return false;
+    }
+}
 
     private void _(String s)  //pokaže v logcatu za TESTINNG :P
     {

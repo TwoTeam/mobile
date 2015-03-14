@@ -40,7 +40,7 @@ ViewPager viewPager;
     public void onBackPressed() { // back disablan oz. tuki ga customiziraš
     }
     //ČE JE ONLINE
-    protected boolean isOnline(){ //še ni nikjer
+    protected boolean isOnline(){
         ConnectivityManager cm= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         if(networkInfo != null && networkInfo.isConnectedOrConnecting()){

@@ -9,23 +9,52 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:id="@+id/loading"
+        android:paddingTop="20dp">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar1"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal|right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayout">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/topBar">
+            android:id="@+id/topBar"
+            android:paddingTop="15dp">
 
             <ImageButton
-                android:layout_width="58dp"
-                android:layout_height="78dp"
+                android:layout_width="92dp"
+                android:layout_height="124dp"
                 android:id="@+id/imageButton"
-                android:src="@drawable/arrowbackbefore"
+                android:src="@drawable/konca"
                 android:scaleType="fitCenter"
                 android:background="#00000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Login"
+                android:id="@+id/tvLogin"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:typeface="normal"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -73,6 +102,7 @@
                 android:text="LOGIN"
                 android:id="@+id/bLogin"
                 android:paddingTop="10dp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -102,7 +132,9 @@
                 android:textColor="#ffff712b"
                 android:onClick="onClick"
                 android:clickable="true"/>
+
         </LinearLayout>
 
     </LinearLayout>
+
 </RelativeLayout>

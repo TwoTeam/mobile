@@ -74,7 +74,6 @@ public class ForgotYourPassword extends ActionBarActivity {
                 //networking
                 Networking n = new Networking();
                 n.execute("http://veligovsek.si/events/apis/forgotpassword.php", Networking.NETWORK_STATE_REGISTER);
-                toast("Please check your inbox");
                 Intent intent = new Intent(ForgotYourPassword.this, LoginActivity.class);
                 // String value = intent.getStringExtra("id") //če rabimo parej poslat
                 ForgotYourPassword.this.startActivity(intent);
@@ -192,7 +191,7 @@ public class ForgotYourPassword extends ActionBarActivity {
             _("errors are detected!!!");
             try {
                 JSONObject jo = new JSONObject(response);
-                String error = jo.getString("error");
+                String error = jo.getString("message");
                 _("Error from server is::"+error);
                 toast(error);
             }
@@ -209,15 +208,13 @@ public class ForgotYourPassword extends ActionBarActivity {
         try {
             JSONObject jo = new JSONObject(response);
 
-            String email = jo.getString("email"); //za druge isto narediš
+            String email = jo.getString("message"); //za druge isto narediš
 
             _("JSON CONTENT:");
-            _("email:"+email);
-
-
-            toast("Email SENT Successful!");
+            _("message:"+email);
 
             startActivity(new Intent("teamtwo.event.com.events.Login"));
+            toast("Email has been dispatched!");
         }
         catch ( JSONException e)
         {
