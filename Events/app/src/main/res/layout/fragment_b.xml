@@ -1,13 +1,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="teamtwo.event.com.events.FragmentB"
-    android:background="#00FFCC">
+    android:background="#000000">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/lvEvents"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/FragmentB" />
-
+        android:layout_width="fill_parent" />
 </FrameLayout>
