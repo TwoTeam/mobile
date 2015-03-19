@@ -14,8 +14,6 @@ import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
 
-ViewPager viewPager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

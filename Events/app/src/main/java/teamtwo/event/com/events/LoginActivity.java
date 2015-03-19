@@ -84,8 +84,7 @@ public class LoginActivity extends ActionBarActivity {
 
         mySharedPreferences=getSharedPreferences("ACC",mode);
 
-
-        jname =mySharedPreferences.getString("username","");
+        jname =mySharedPreferences.getString("name","");
         jid =mySharedPreferences.getString("id","");
 
 
@@ -129,7 +128,7 @@ public class LoginActivity extends ActionBarActivity {
             }
         });
 
-        if (jname == "" || jid == "") { //    jname != "" || jid != ""  (zapomne) jname == "" || jid == "" (TESTING zmeri na login)   za testing ker ni LOGOUT-a
+        if (jname == "null" || jid == "null") { //    jname != "" || jid != "" (zmeri te bo vprašu za login) jname != "" || jid != "" (TESTING zmeri na login)   za testing ker ni LOGOUT-a
 
             bLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -370,7 +369,7 @@ public class LoginActivity extends ActionBarActivity {
 
             toast("Login Successful!");
                       Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                       // String value = intent.getStringExtra("id") //če rabimo parej poslat
+          // String value = intent.getStringExtra(jid); //če rabimo parej poslat
                        LoginActivity.this.startActivity(intent);
                         _("SAVING ID: "+jid);
                         _("SAVING User: "+jname);
