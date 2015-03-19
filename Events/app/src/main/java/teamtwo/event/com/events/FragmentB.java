@@ -7,10 +7,38 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 public class FragmentB extends android.support.v4.app.Fragment {
-    private String title;
+    public static final String ARG_PAGE = "ARG_PAGE";
+
+    private int mPage;
+
+    public static FragmentB newInstance(int page) {
+        Bundle args = new Bundle();
+        args.putInt(ARG_PAGE, page);
+        FragmentB fragment = new FragmentB();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//        mPage = getArguments().getInt(ARG_PAGE);
+    }
+
+    // Inflate the fragment layout we defined above for this fragment
+    // Set the associated text for the title
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_b, container, false);
+     //   TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
+      //  tvTitle.setText("Fragment " + mPage);
+        return view;
+    }
+  /*  private String title;
     private int page;
     // newInstance constructor for creating fragment with arguments
     public static FragmentB newInstance(int page, String title) {
@@ -26,8 +54,8 @@ public class FragmentB extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-/*        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");*/
+*//*        page = getArguments().getInt("someInt", 0);
+        title = getArguments().getString("someTitle");*//*
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -36,5 +64,5 @@ public class FragmentB extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_b, container, false);
         return view;
-    }
+    }*/
 }
