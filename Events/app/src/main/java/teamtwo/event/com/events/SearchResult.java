@@ -1,19 +1,22 @@
+/*
 package teamtwo.event.com.events;
 
+*/
 /**
  * Created by Primož Pesjak on 18.3.2015.
- */
+ *//*
+
 public class SearchResult{
         private String name = "";
         private String date = "";
         private String city = "";
-        private String type = "";
+        private String picture_url = "";
 
         public void setName(String Name) {
             this.name = Name;
         }
 
-        public String getName() {
+    public String getName() {
             return name;
         }
 
@@ -24,7 +27,6 @@ public class SearchResult{
         public String getDate() {
             return date;
         }
-
         public void setCity(String City) {
             this.city = City;
         }
@@ -33,11 +35,12 @@ public class SearchResult{
             return city;
         }
 
-        public void setType(String Type) {
-            this.city = Type;
+        public void setPicture_url(String Type) {
+            this.picture_url = Type;
         }
 
-        public String getType() {
-            return type;
+        public String getPicture_url() {
+            return picture_url;
         }
 }
+*/

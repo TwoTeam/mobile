@@ -2,11 +2,13 @@ package teamtwo.event.com.events;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ListFragment;
 
+import teamtwo.event.com.events.MainActivity;
 /**
  * Created by Primož Pesjak on 19.3.2015.
  */
-public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
+public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter{
 
     private static int NUM_ITEMS = 3;
         public FragmentPagerAdapter(FragmentManager fragmentManager) {
@@ -28,8 +30,8 @@ public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAd
                     return a;
                 case 1:
                     FragmentB b = new FragmentB();
-
                     return b;
+
                 case 2:
                     FragmentC c = new FragmentC();
                     return c;

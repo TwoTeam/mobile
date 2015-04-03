@@ -128,7 +128,7 @@ public class LoginActivity extends ActionBarActivity {
             }
         });
 
-        if (jname != "null" || jid != "null") { //    jname != "" || jid != "" (zmeri te bo vprašu za login) jname != "" || jid != "" (TESTING zmeri na login)   za testing ker ni LOGOUT-a
+        if (jname == "null" || jid == "null") { //    jname != "" || jid != "" (zmeri te bo vprašu za login) jname != "" || jid != "" (TESTING zmeri na login)   za testing ker ni LOGOUT-a
 
             bLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
