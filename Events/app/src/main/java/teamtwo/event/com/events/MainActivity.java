@@ -1,6 +1,7 @@
 package teamtwo.event.com.events;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -33,7 +34,7 @@ public class MainActivity extends FragmentActivity {
         // Attach the view pager to the tab strip
         tabsStrip.setViewPager(viewPager);
 
-        viewPager.setCurrentItem(1);  //postavi, da si na sredinskem screnu
+        viewPager.setCurrentItem(0);  //postavi, da si na sredinskem screnu
 
 
         tabsStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -41,8 +42,10 @@ public class MainActivity extends FragmentActivity {
             // This method will be invoked when a new page becomes selected.
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(MainActivity.this,
-                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
+            /*    Toast.makeText(MainActivity.this,
+                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();*/
+
+
             }
 
             // This method will be invoked when the current page is scrolled

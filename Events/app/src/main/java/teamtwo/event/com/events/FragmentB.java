@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -32,6 +36,8 @@ import teamtwo.event.com.events.Events.Event;
 
 public class FragmentB extends android.support.v4.app.Fragment  {
 
+
+    private SwipeRefreshLayout swipeContainer;
     // Log tag
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -43,10 +49,58 @@ public class FragmentB extends android.support.v4.app.Fragment  {
     private CustomListAdapter adapter;
     private View myFragmentView;
 
+    public static FragmentB newInstance(int page) {
+        Bundle args = new Bundle();
+        FragmentB fragment = new FragmentB();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
 public void onActivityCreated(Bundle savedInstanceState)
 {
     super.onActivityCreated(savedInstanceState);
+
+    List<String> spinnerArray =  new ArrayList<String>();
+    spinnerArray.add("Velenje");
+    spinnerArray.add("Ljubljana");
+    spinnerArray.add("Celje");
+    spinnerArray.add("Koper");
+
+    ArrayAdapter<String> adapterspineer = new ArrayAdapter<String>(
+            getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
+
+    adapterspineer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    Spinner sItems = (Spinner) myFragmentView.findViewById(R.id.sCity);
+    sItems.setAdapter(adapterspineer);
+
+    String selected = sItems.getSelectedItem().toString();
+
+    //Toast.makeText(getActivity(),selected, Toast.LENGTH_SHORT);
+    swipeContainer = (SwipeRefreshLayout)myFragmentView.findViewById(R.id.swipeContainer);
+
+    swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+
+            adapter = new CustomListAdapter(getActivity(), eventList);
+            eventList.clear(); ///da se ne DUPLICIRA
+            listView.setAdapter(adapter);
+
+
+            request();
+
+
+            swipeContainer.setRefreshing(false);
+
+        }
+    });
+
+    swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_red_light);
+
 
     listView = (ListView) myFragmentView.findViewById(R.id.list);
     if(adapter == null) {
@@ -54,9 +108,87 @@ public void onActivityCreated(Bundle savedInstanceState)
         listView.setAdapter(adapter);
     }
 
+    request();
+
+
+/*
+
+    pDialog = new ProgressDialog(getActivity());
+    // Showing progress dialog before making http request
+    pDialog.setMessage("Loading...");
+    pDialog.show();
+*/
+
+
+
+
+
+/*
 
 
     JsonArrayRequest movieReq = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d(TAG, response.toString());
+                       // hidePDialog();
+
+                        // Parsing json
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+
+                                JSONObject obj = response.getJSONObject(i);
+                                Event event = new Event();
+                                event.setTitle(obj.getString("name"));
+                                event.setPicture_url(obj.getString("picture_url"));
+                                event.setCity(obj.getString("city"));
+                                event.setDate(obj.getString("date"));
+
+                                // Genre is json array
+                               */
+/* JSONArray genreArry = obj.getJSONArray("genre");
+                                ArrayList<String> genre = new ArrayList<String>();
+                                for (int j = 0; j < genreArry.length(); j++) {
+                                    genre.add((String) genreArry.get(j));
+                                }
+                                movie.setGenre(genre);
+*//*
+
+                                // adding movie to movies array
+                                eventList.add(event);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                        // notifying list adapter about data changes
+                        // so that it renders the list view with updated data
+                        adapter.notifyDataSetChanged();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+               // hidePDialog();
+
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(movieReq);
+
+
+*/
+
+
+    }
+
+    private void request()
+    {
+
+        JsonArrayRequest movieReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -94,6 +226,7 @@ public void onActivityCreated(Bundle savedInstanceState)
                         // notifying list adapter about data changes
                         // so that it renders the list view with updated data
                         adapter.notifyDataSetChanged();
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -106,12 +239,7 @@ public void onActivityCreated(Bundle savedInstanceState)
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(movieReq);
-
-
-
-
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {

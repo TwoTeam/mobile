@@ -10,8 +10,15 @@
         app:pstsShouldExpand="true"
         app:pstsTextAllCaps="true"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
-    </com.astuetz.PagerSlidingTabStrip>
+        android:layout_height="48dp"
+        android:textSize="14sp"
+        android:textColor="#000000"
+        app:pstsDividerColor="@color/green"
+        app:pstsIndicatorColor="@color/red"
+        app:pstsUnderlineColor="@color/blue"
+        app:pstsTabPaddingLeftRight="14dp"
+        android:background="#ff1b3036"> >
+      </com.astuetz.PagerSlidingTabStrip>
 
 
 
@@ -19,6 +26,6 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white" />
+        android:background="#ff2e3733" />
 
 </LinearLayout>

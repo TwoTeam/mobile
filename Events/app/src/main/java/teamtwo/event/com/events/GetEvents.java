@@ -163,6 +163,7 @@ public class GetEvents {
             array = new ArrayList<String>();
 
 
+
             array.add(finalresult.getString("picture"));
             array.add(finalresult.getString("name")); //za druge isto narediš
             array.add(finalresult.getString("date"));

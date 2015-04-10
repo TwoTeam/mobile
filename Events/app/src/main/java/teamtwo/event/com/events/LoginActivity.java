@@ -52,7 +52,7 @@ public class LoginActivity extends ActionBarActivity {
     EditText etUsername,
              etPassword;
 
-    String username, password, id, jid, jname;
+  public String username, password, id, jid, jname;
     Button bLogin; //ta dela
     ImageButton ibButton; //še ne dela, vse isto sam da je image, naredi namesto button
 

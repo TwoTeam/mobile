@@ -1,6 +1,8 @@
 package teamtwo.event.com.events;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +18,10 @@ public class FragmentA extends android.support.v4.app.Fragment {
 
     private int mPage;
 
+    String jid="", jname="";
+    int mode = Activity.MODE_PRIVATE;
+    SharedPreferences mySharedPreferences;
+
     public static FragmentA newInstance(int page) {
         Bundle args = new Bundle();
    //     args.putInt(ARG_PAGE, page);
@@ -27,6 +33,9 @@ public class FragmentA extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
       //  mPage = getArguments().getInt(ARG_PAGE);
 
     }
@@ -36,8 +45,14 @@ public class FragmentA extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_a, container, false);
-     //   TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
-     //   tvTitle.setText("Fragment " + mPage);
+
+        SharedPreferences preferences = this.getActivity().getSharedPreferences("ACC", Context.MODE_PRIVATE);
+        jname =preferences.getString("name","");
+        jid =preferences.getString("id","");
+
+
+        TextView tvUser = (TextView) view.findViewById(R.id.tvUser);
+        tvUser.setText("Logged in as, " + jname);
         return view;
     }
 /*    private String title;

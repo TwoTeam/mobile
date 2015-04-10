@@ -4,10 +4,20 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffff3923">
-    <TextView
-        android:id="@+id/tvTitle"
-        android:text="Fragment A"
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvUser"
+            android:text="USER"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 </LinearLayout>

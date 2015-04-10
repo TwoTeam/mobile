@@ -1,3 +1,4 @@
+/*
 package teamtwo.event.com.events;
 
 import android.app.Activity;
@@ -39,7 +40,8 @@ public class FragmentC extends android.support.v4.app.Fragment {
         return view;
     }
 
-  /*  private String title;
+  */
+/*  private String title;
     private int page;
     // newInstance constructor for creating fragment with arguments
     public static FragmentC newInstance(int page, String title) {
@@ -55,8 +57,12 @@ public class FragmentC extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);*//*
+*/
+/*
         page = getArguments().getInt("someInt", 0);
         title = getArguments().getString("someTitle");*//*
+*/
+/*
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -66,5 +72,7 @@ public class FragmentC extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_c, container, false);
         return view;
     }
-*/
+*//*
+
 }
+*/
