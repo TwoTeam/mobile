@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Sola\Projekti\Events\CustomListViewVolley\app\libs\volley.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="d4aaa36e04ee71a83444f8367c97a46fda662d2c">
+        <dex dex="C:\Sola\Projekti\Events\CustomListViewVolley\app\build\intermediates\pre-dexed\debug\volley-ef6e9e3ea25ada18132c0366bcf02c5924cd70d1.jar" />
+    </item>
+    <item
+        jar="C:\Program Files (x86)\adt-bundle\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="C:\Sola\Projekti\Events\CustomListViewVolley\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-860cbcafb23937f762ef7034a97cded210032620.jar" />
+    </item>
+
+</items>
