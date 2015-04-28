@@ -168,6 +168,8 @@ public class GetEvents {
             array.add(finalresult.getString("name")); //za druge isto narediš
             array.add(finalresult.getString("date"));
             array.add(finalresult.getString("city"));
+            array.add(finalresult.getString("id"));
+            array.add(finalresult.getString("description"));
 
 
 /*

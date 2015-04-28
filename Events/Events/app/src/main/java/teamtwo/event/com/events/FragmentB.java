@@ -1,7 +1,10 @@
 package teamtwo.event.com.events;
 
+import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -10,26 +13,34 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import teamtwo.event.com.events.Events.AppController;
@@ -67,15 +78,24 @@ public class FragmentB extends android.support.v4.app.Fragment  {
     }
 
 
+    String jname="";
 public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
 
+   // listView = (ListView) myFragmentView.findViewById(R.id.list);
+
+    SharedPreferences preferences = this.getActivity().getSharedPreferences("ACC", Context.MODE_PRIVATE);
+    jname =preferences.getString("name","");
 
     List<String> spinnerArray = new ArrayList<String>();
-    spinnerArray.add("Velenje");
     spinnerArray.add("Ljubljana");
+    spinnerArray.add("Velenje");
     spinnerArray.add("Celje");
     spinnerArray.add("Koper");
+    spinnerArray.add("Dobrna");
+    spinnerArray.add("Maribor");
+    spinnerArray.add("Kranj");
+
 
     ArrayAdapter<String> adapterspineer = new ArrayAdapter<String>(
             getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
@@ -84,22 +104,25 @@ public void onActivityCreated(Bundle savedInstanceState) {
     final Spinner sItems = (Spinner) myFragmentView.findViewById(R.id.sCity);
     sItems.setAdapter(adapterspineer);
 
-    String selected = sItems.getSelectedItem().toString();
+    final String selected = sItems.getSelectedItem().toString();
 
 
     sItems.setOnItemSelectedListener(
             new AdapterView.OnItemSelectedListener() {
 
+
                 @Override
                 public void onItemSelected(AdapterView<?> arg0, View arg1,
                                            int arg2, long arg3) {
-                    url = "http://veligovsek.si/events/apis/facebook_events.php?city="+sItems.getSelectedItem().toString();   //pošlje mesto naprej
+                 //   url = "http://veligovsek.si/events/apis/facebook_events.php?city="+sItems.getSelectedItem().toString()+"&user="+jname;   //pošlje mesto naprej  GET zaenkrat
+
                     handler.post(refreshing); //da refresha page
                    // request();
 
+                    url = "http://veligovsek.si/events/apis/facebook_events.php?city="+sItems.getSelectedItem().toString()+"&user="+jname;   //pošlje mesto naprej  GET zaenkrat
+
 
                 }
-
                 @Override
                 public void onNothingSelected(AdapterView<?> arg0) {
 
@@ -107,7 +130,9 @@ public void onActivityCreated(Bundle savedInstanceState) {
                 }
             }
     );
-    url = "http://veligovsek.si/events/apis/facebook_events.php?city="+selected;
+
+
+    url = "http://veligovsek.si/events/apis/facebook_events.php?city="+selected+"&user="+jname;
     //Toast.makeText(getActivity(),selected, Toast.LENGTH_SHORT);
     swipeRefreshLayout = (SwipeRefreshLayout) myFragmentView.findViewById(R.id.swipe_container);
     // The refreshListner is called when the layout is pulled down.
@@ -159,6 +184,8 @@ public void onActivityCreated(Bundle savedInstanceState) {
             swipeRefreshLayout.setEnabled(enable);
         }
     });
+
+
     /*swipeContainer = (SwipeRefreshLayout)myFragmentView.findViewById(R.id.swipeContainer);
 
     swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -187,16 +214,131 @@ public void onActivityCreated(Bundle savedInstanceState) {
 */
 
 
-    listView = (ListView) myFragmentView.findViewById(R.id.list);
+  listView = (ListView) myFragmentView.findViewById(R.id.list);
     if (adapter == null) {
         adapter = new CustomListAdapter(getActivity(), eventList);
         listView.setAdapter(adapter);
+        registerForContextMenu(listView);
     }
 
 
     request();
+    handler.post(refreshing);
 
+    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            TextView selectedDescription = (TextView)view.findViewById(R.id.description);
+            if(selectedDescription.getMaxHeight() == 500) {
+                selectedDescription.setMaxHeight(100);
+            }
+            else {
+                selectedDescription.setMaxHeight(500);
+            }
+
+        }
+    });
 }
+
+
+
+
+    String idEvent;
+    //naredi context menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+           // AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        AdapterView.AdapterContextMenuInfo info =  (AdapterView.AdapterContextMenuInfo)menuInfo;
+
+            int position = info.position;
+
+        NetworkImageView selectedPicture = ((NetworkImageView)info.targetView.findViewById(R.id.picture));
+        String selectedWord = ((TextView)info.targetView.findViewById(R.id.name)).getText().toString();
+        String selectedCity = ((TextView)info.targetView.findViewById(R.id.city)).getText().toString();
+        String selectedDate = ((TextView)info.targetView.findViewById(R.id.date)).getText().toString();
+        String selectedDescription = ((TextView)info.targetView.findViewById(R.id.description)).getText().toString();
+
+        idEvent = ((TextView)info.targetView.findViewById(R.id.id)).getText().toString();
+            menu.setHeaderTitle(selectedWord);
+
+
+
+          //  int position = info.position; //pozicija
+
+            //String selectedTitle = ((TextView)(v.findViewById(R.id.name))).getText().toString();  //dobi naslov
+
+
+
+            String[] menuItems = getResources().getStringArray(R.array.menu);
+            for (int i = 0; i<menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+
+
+
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+
+
+
+     //   String[] menuItems = getResources().getStringArray(R.array.menu);
+       // String menuItemName = menuItems[menuItemIndex];
+
+        int menuItemIndex = item.getItemId();
+        String[] menuItems = getResources().getStringArray(R.array.menu);
+        String menuItemName = menuItems[menuItemIndex];
+
+
+
+        // String selectedID = ((TextView)info.targetView.findViewById(R.id.id)).getText().toString();
+
+
+        if(menuItemIndex == 0) { //FAV
+
+            _(menuItemName);
+
+            url = "http://veligovsek.si/events/apis/favourite.php?event="+idEvent+"&user="+jname;
+
+            _(url);
+
+
+        }
+        else if(menuItemIndex == 1) { //HIDE
+                _(menuItemName);
+
+
+            url = "http://veligovsek.si/events/apis/hide.php?event="+idEvent+"&user="+jname;
+
+            _(url);
+
+
+
+        }
+
+
+/*
+        Toast.makeText(myFragmentView.getContext(),menuItemName,Toast.LENGTH_LONG);
+*/
+
+        //  url = "http://veligovsek.si/events/apis/favourite.php?event="+selectedID+"&user="+jname;
+
+
+
+        final int position = info.position; //mam INDEX tiste pozicije
+        // _(position);
+
+
+
+        return true;
+    }
+
+
+
 
 /*
 
@@ -272,6 +414,8 @@ public void onActivityCreated(Bundle savedInstanceState) {
 
  //   }
 
+
+
     private final Runnable refreshing = new Runnable(){
         public void run(){
             try {
@@ -323,7 +467,8 @@ public void onActivityCreated(Bundle savedInstanceState) {
                                 event.setPicture_url(obj.getString("image"));
                                 event.setCity(obj.getString("city"));
                                 event.setDate(obj.getString("start"));
-
+                                event.setID(obj.getString("id"));
+                                event.setDescription(obj.getString("description"));
 /*                                event.setTitle(obj.getString("name"));
                                 event.setPicture_url(obj.getString("picture_url"));
                                 event.setCity(obj.getString("city"));
@@ -374,6 +519,7 @@ public void onActivityCreated(Bundle savedInstanceState) {
 
         return myFragmentView;
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -387,6 +533,10 @@ public void onActivityCreated(Bundle savedInstanceState) {
         }
     }
 
+    private void _(String s)  //pokaže v logcatu za TESTINNG :P
+    {
+        Log.d("MyApp", "LoginActivity" + "#######"+ s);
+    }
 
 
 

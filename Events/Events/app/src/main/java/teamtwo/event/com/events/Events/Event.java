@@ -6,16 +6,32 @@ import java.util.ArrayList;
  * Created by Primož Pesjak on 27.3.2015.
  */
 public class Event {
-    private String name, picture_url, date, city;
+    private String name, picture_url, date, city, id, description;
 
     public Event() {
     }
 
-    public Event(String name, String picture_url, String date , String city) {
+    public Event(String name, String picture_url, String date , String city, String id, String description) {
         this.name = name;
         this.picture_url = picture_url;
         this.date = date;
         this.city = city;
+        this.id = id;
+    }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description=description;
+    }
+
+    public String getID() {
+        return id;
+    }
+
+    public void setID(String id) {
+        this.id=id;
     }
 
     public String getTitle() {

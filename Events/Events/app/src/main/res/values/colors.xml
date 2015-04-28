@@ -5,9 +5,11 @@
     <color name="frame_background">#696969</color>
 
 
-    <color name="green">#ff259fee</color>
+    <color name="green">#ff00ee20</color>
     <color name="blue">#ff59f7ff</color>
     <color name="red">#ff5ce9ff</color>
+    <color name="black">#ff181818</color>
+    <color name="white">#ff7e8785</color>
 
     <color name="genre">#666666</color>
     <color name="year">#888888</color>

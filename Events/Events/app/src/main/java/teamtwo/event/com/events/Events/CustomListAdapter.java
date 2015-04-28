@@ -64,6 +64,16 @@ public class CustomListAdapter extends BaseAdapter {
        // TextView genre = (TextView) convertView.findViewById(R.id.genre);
         TextView date = (TextView) convertView.findViewById(R.id.date);
 
+        TextView id = (TextView) convertView.findViewById(R.id.id);
+
+        TextView description = (TextView) convertView.findViewById(R.id.description);
+
+        //description.setHeight(50);
+
+
+        //description.setMaxHeight(500);
+
+
         // getting movie data for the row
         Event m = eventItems.get(position);
 
@@ -87,6 +97,18 @@ public class CustomListAdapter extends BaseAdapter {
 
         // release year
         date.setText(String.valueOf(m.getDate()));
+
+        id.setText(String.valueOf(m.getID()));
+
+        description.setText(String.valueOf(m.getDescription()));
+
+        if (position%2 == 0) {
+            convertView.setBackgroundResource(R.drawable.abc_list_pressed_holo_light);
+        } else {
+            convertView.setBackgroundResource(R.drawable.abc_ab_share_pack_holo_light);
+        }
+
+
 
         return convertView;
     }

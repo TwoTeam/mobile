@@ -1,13 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- This is the fragment  to be displayed for a section associated with a tab -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffff8e52">
-    <TextView
-        android:id="@+id/tvTitle"
-        android:text="Fragment C"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center" />
-</LinearLayout>
+    android:padding="10dp">
+    <!-- Thumbnail Image -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="false"
+        android:id="@+id/LayoutPicture">
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/picture"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="8dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/LayoutName"
+        android:layout_below="@+id/LayoutPicture">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/title"
+            android:layout_alignTop="@+id/picture"
+            android:layout_toRightOf="@+id/picture"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/LayoutCity"
+        android:layout_below="@+id/LayoutPicture">
+
+        <TextView
+            android:id="@+id/city"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/picture"
+            android:textColor="@color/genre"
+            android:textSize="@dimen/genre" />
+    </LinearLayout>
+
+    <!-- Movie Title -->
+
+
+    <!-- Genre -->
+
+    <!-- Release Year -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/LayoutDate"
+        android:layout_below="@+id/LayoutCity">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/year"
+            android:textSize="@dimen/year" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/LayoutDescription"
+        android:layout_below="@+id/LayoutDate">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/description"
+            android:textColor="#ff0016ff" />
+    </LinearLayout>
+
+</RelativeLayout>

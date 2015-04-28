@@ -13,4 +13,9 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_forgot_your_password">ForgotYourPassword</string>
 
+
+    <string-array name="menu">
+        <item>Favourite</item>
+        <item>Hide</item>
+    </string-array>
 </resources>
