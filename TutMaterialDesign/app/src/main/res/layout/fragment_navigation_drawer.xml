@@ -5,10 +5,24 @@
     android:background="#0053fc"
     tools:context="primoz.programmer.com.tutmaterialdesign.NavigationDrawerFragment">
 
+    <LinearLayout
+        android:id="@+id/containerDrawerImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="140dp"
-        android:src="@drawable/imgbleach" />
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="140dp"
+            android:src="@drawable/imgbleach" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/drawerList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+
 
 </RelativeLayout>
